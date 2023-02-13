@@ -26,7 +26,6 @@ void yyerror(char*);
 "^" {
 	return OP_POW;
 }
-
 "=" {
 	return OP_EQL;
 }
@@ -109,9 +108,6 @@ void yyerror(char*);
 }
 "km_to_mi"|"KM_TO_MI" {
 	return FUNC_KM_TO_MI;
-}
-"var"|"VAR" {
-    return VAR;
 }
 \n {
 	return EOL;
