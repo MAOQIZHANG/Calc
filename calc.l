@@ -26,9 +26,6 @@ void yyerror(char*);
 "^" {
 	return OP_POW;
 }
-"%" {
-	return OP_MOD;
-}
 
 "=" {
 	return OP_EQL;
