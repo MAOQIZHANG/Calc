@@ -83,39 +83,6 @@ void yyerror(char*);
 [a-zA-Z]([a-zA-Z]|[0-9])* {
 	return T_IDEN;
 }
-"gbp_to_usd"|"GBP_TO_USD" {
-	return FUNC_GBP_TO_USD;
-}
-"usd_to_gbp"|"USD_TO_GBP" {
-	return FUNC_USD_TO_GBP;
-}
-"gbp_to_euro"|"GBP_TO_EURO" {
-	return FUNC_GBP_TO_EURO;
-}
-"euro_to_gbp"|"EURO_TO_GBP"{
-	return FUNC_EURO_TO_GBP;
-}
- "usd_to_euro"|"USD_TO_EURO" {
-	return FUNC_USD_TO_EURO;
-}
-"euro_to_usd"|"EURO_TO_USD" {
-	return FUNC_EURO_TO_USD;
-}
-"cel_to_fah"|"CEL_To_FAH" {
-	return FUNC_CEL_TO_FAH;
-}
-"fah_to_cel"|"FAH_TO_CEL" {
-	return FUNC_FAH_TO_CEL;
-}
-"mi_to_km"|"MI_TO_KM"{
-	return FUNC_MI_TO_KM;
-}
-"km_to_mi"|"KM_TO_MI" {
-	return FUNC_KM_TO_MI;
-}
-"var"|"VAR" {
-    return VAR;
-}
 \n {
 	return EOL;
 }
