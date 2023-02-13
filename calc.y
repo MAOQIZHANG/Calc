@@ -67,12 +67,12 @@ factor: T_IDEN                                      { $$ = $1; }
 	| FUNC_TAN SYM_PRNL expr SYM_PRNR               { $$ = tan($3); }
     | FUNC_LOG2 SYM_PRNL expr SYM_PRNR              { $$ = log2($3); }
 	| FUNC_LOG10 SYM_PRNL expr SYM_PRNR             { $$ = log10($3); }
-    | expr FUNC_GBP_TO_USD              			{ $$ = $3; }
-	| expr FUNC_USD_TO_GBP              			{ $$ = $3; }
-	| expr FUNC_GBP_TO_EURO             			{ $$ = $3; }
-	| expr FUNC_EURO_TO_GBP             			{ $$ = $3; }
-	| expr FUNC_USD_TO_EURO              			{ $$ = $3; }
-	| expr FUNC_EURO_TO_USD              			{ $$ = $3; }	
+    | expr FUNC_GBP_TO_USD              			{ $$ = $1; }
+	| expr FUNC_USD_TO_GBP              			{ $$ = $1; }
+	| expr FUNC_GBP_TO_EURO             			{ $$ = $1; }
+	| expr FUNC_EURO_TO_GBP             			{ $$ = $1; }
+	| expr FUNC_USD_TO_EURO              			{ $$ = $1; }
+	| expr FUNC_EURO_TO_USD              			{ $$ = $1; }	
 ;
 
 %%
