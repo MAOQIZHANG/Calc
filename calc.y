@@ -36,8 +36,6 @@ stmt: T_IDEN OP_EQL expr           { $$ = $3; $1 = $3; }
     | expr                         { $$ = $1; }
 ;
 
-const: V_PI                   {$$ = 3.14; }
-;
 
 expr: expr OP_ADD term          { $$ = $1 + $3; }
     | expr OP_SUB term         { $$ = $1 - $3; }
@@ -58,6 +56,7 @@ pow: factor OP_POW pow           { $$ = pow($1,$3); }
 ;
 
 factor: T_IDEN                                      { $$ = $1; }
+	| V_PI  										{ $$ = 3.14; }
     | T_INT                                         { $$ = $1; }
     | T_FLOAT                                       { $$ = $1; }
     | SYM_PRNL expr SYM_PRNR                        { $$ = ($2); }
