@@ -16,8 +16,10 @@ void yyerror(char*);
 %token FUNC_L FUNC_R
 %token FUNC_ABS FUNC_FLOOR FUNC_CEIL FUNC_SIN FUNC_COS FUNC_SQRT FUNC_TAN FUNC_LOG2 FUNC_LOG10
 %token FUNC_GBP_TO_USD FUNC_USD_TO_GBP FUNC_GBP_TO_EURO FUNC_EURO_TO_GBP FUNC_USD_TO_EURO FUNC_EURO_TO_USD   
+
 %token CMD_EXT
 %token T_IDEN
+
 %left OP_ADD OP_SUB
 %left OP_MUL OP_DIV
 %left OP_POW
@@ -34,6 +36,8 @@ stmt: T_IDEN OP_EQL expr           { $$ = $3; $1 = $3; }
     | expr                         { $$ = $1; }
 ;
 
+const: V_PI                   {$$ = 3.14; }
+;
 
 expr: expr OP_ADD term          { $$ = $1 + $3; }
     | expr OP_SUB term         { $$ = $1 - $3; }
@@ -54,7 +58,6 @@ pow: factor OP_POW pow           { $$ = pow($1,$3); }
 ;
 
 factor: T_IDEN                                      { $$ = $1; }
-	| V_PI  										{ $$ = 3.14; }
     | T_INT                                         { $$ = $1; }
     | T_FLOAT                                       { $$ = $1; }
     | SYM_PRNL expr SYM_PRNR                        { $$ = ($2); }
