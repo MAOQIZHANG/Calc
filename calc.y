@@ -9,12 +9,13 @@ void yyerror(char*);
 
 %}
 
-%token T_FLOAT T_INT
+%token T_FLOAT T_INT V_PI 
 %right OP_EQL
 %token EOL
 %token SYM_PRNL SYM_PRNR SYM_COMMA
 %token FUNC_L FUNC_R
-%token FUNC_ABS FUNC_SIN FUNC_COS FUNC_SQRT FUNC_TAN FUNC_LOG2 FUNC_LOG10
+%token FUNC_ABS FUNC_FLOOR FUNC_SIN FUNC_COS FUNC_SQRT FUNC_TAN FUNC_LOG2 FUNC_LOG10
+%token FUNC_GBP_TO_USD FUNC_USD_TO_GBP FUNC_GBP_TO_EURO FUNC_EURO_TO_GBP FUNC_USD_TO_EURO FUNC_EURO_TO_USD   
 %token CMD_EXT
 %token T_IDEN
 %left OP_ADD OP_SUB
@@ -66,12 +67,12 @@ factor: T_IDEN                                      { $$ = $1; }
 	| FUNC_TAN SYM_PRNL expr SYM_PRNR               { $$ = tan($3); }
     | FUNC_LOG2 SYM_PRNL expr SYM_PRNR              { $$ = log2($3); }
 	| FUNC_LOG10 SYM_PRNL expr SYM_PRNR             { $$ = log10($3); }
-    | expr FUNC_GBP_TO_USD              			{ $$ = $3*0.5; }
-	| expr FUNC_USD_TO_GBP              			{ $$ = $3*0.5; }
-	| expr FUNC_GBP_TO_EURO             			{ $$ = $3*0.5; }
-	| expr FUNC_EURO_TO_GBP             			{ $$ = $3*0.5; }
-	| expr FUNC_USD_TO_EURO              			{ $$ = $3*0.5; }
-	| expr FUNC_EURO_TO_USD              			{ $$ = $3*0.5; }	
+    | expr FUNC_GBP_TO_USD              			{ $$ = $3; }
+	| expr FUNC_USD_TO_GBP              			{ $$ = $3; }
+	| expr FUNC_GBP_TO_EURO             			{ $$ = $3; }
+	| expr FUNC_EURO_TO_GBP             			{ $$ = $3; }
+	| expr FUNC_USD_TO_EURO              			{ $$ = $3; }
+	| expr FUNC_EURO_TO_USD              			{ $$ = $3; }	
 ;
 
 %%
