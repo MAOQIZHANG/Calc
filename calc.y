@@ -24,8 +24,6 @@ void yyerror(char*);
 %left OP_POW OP_MOD
 %right OP_EQL FUNC_FACT
 
-%right FUNC_GBP_TO_USD FUNC_USD_TO_GBP FUNC_GBP_TO_EURO FUNC_EURO_TO_GBP FUNC_USD_TO_EURO FUNC_EURO_TO_USD
-%right FUNC_MI_TO_KM FUNC_KM_TO_MI
 %left VAR
 %%
 
@@ -72,15 +70,6 @@ factor: T_IDEN                                      { $$ = $1; }
 	| FUNC_TAN SYM_PRNL expr SYM_PRNR               { $$ = tan($3); }
     | FUNC_LOG2 SYM_PRNL expr SYM_PRNR              { $$ = log2($3); }
 	| FUNC_LOG10 SYM_PRNL expr SYM_PRNR             { $$ = log10($3); }
-    | expr FUNC_GBP_TO_USD              			{ $$ = $1; }
-	| expr FUNC_USD_TO_GBP              			{ $$ = $1; }
-	| expr FUNC_GBP_TO_EURO             			{ $$ = $1; }
-	| expr FUNC_EURO_TO_GBP             			{ $$ = $1; }
-	| expr FUNC_USD_TO_EURO              			{ $$ = $1; }
-	| expr FUNC_EURO_TO_USD              			{ $$ = $1; }	
-	| expr FUNC_FACT              					{ $$ = tgamma($1); }
-	| expr FUNC_MI_TO_KM              				{ $$ = $1; }
-	| expr FUNC_KM_TO_MI             				{ $$ = $1; }	
 ;
 
 %%
