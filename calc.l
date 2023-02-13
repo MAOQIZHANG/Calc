@@ -87,50 +87,6 @@ void yyerror(char*);
     printf("T_LOG10  ");
     return FUNC_LOG10;
 }
-"gbp_to_usd"|"GBP_TO_USD" {
-    printf("T_GBP_TO_USD  ");
-	return FUNC_GBP_TO_USD;
-}
-"usd_to_gbp"|"USD_TO_GBP" {
-    printf("T_USD_TO_GBP  ");
-	return FUNC_USD_TO_GBP;
-}
-"gbp_to_euro"|"GBP_TO_EURO" {
-    printf("T_GBP_TO_EURO  ");
-	return FUNC_GBP_TO_EURO;
-}
-"euro_to_gbp"|"EURO_TO_GBP"{
-    printf("T_EURO_TO_GBP  ");
-	return FUNC_EURO_TO_GBP;
-}
- "usd_to_euro"|"USD_TO_EURO" {
-    printf("T_USD_TO_EURO  ");
-	return FUNC_USD_TO_EURO;
-}
-"euro_to_usd"|"EURO_TO_USD" {
-    printf("T_EURO_TO_USD ");
-	return FUNC_EURO_TO_USD;
-}
-"cel_to_fah"|"CEL_To_FAH" {
-    printf("T_CEL_TO_FAH  ");
-	return FUNC_CEL_TO_FAH;
-}
-"fah_to_cel"|"FAH_TO_CEL" {
-    printf("T_FAH_TO_CEL  ");
-	return FUNC_FAH_TO_CEL;
-}
-"mi_to_km"|"MI_TO_KM"{
-    printf("T_MI_TO_KM  ");
-	return FUNC_MI_TO_KM;
-}
-"km_to_mi"|"KM_TO_MI" {
-    printf("T_KM_TO_MI ");
-	return FUNC_KM_TO_MI;
-}
-"var"|"VAR" {
-    printf("T_VAR  ");
-    return VAR;
-}
 [0-9]+ {
     printf("T_INT  ");
 	sscanf(yytext, "%lf", &yylval);
