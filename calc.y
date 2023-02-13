@@ -1,88 +1,83 @@
 %{
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
-#define YYSTYPE double
 
-int yylex(void);
-void yyerror(char*);
+extern int yylex();
+extern int yyparse();
+extern FILE* yyin;
 
+void yyerror(const char* s);
 %}
-%token V_PI
-%token T_FLOAT T_INT  
 
-%token EOL
-%token SYM_PRNL SYM_PRNR SYM_COMMA
-%token FUNC_L FUNC_R
-%token FUNC_SQRT FUNC_ABS FUNC_FLOOR FUNC_CEIL FUNC_SIN FUNC_COS FUNC_TAN FUNC_LOG2 FUNC_LOG10
-
-%token CMD_EXT
-%token T_IDEN
-
-%left OP_ADD OP_SUB
-%left OP_MUL OP_DIV 
-%left OP_POW 
-%right OP_EQL FUNC_FACT
-
-%right FUNC_GBP_TO_USD FUNC_USD_TO_GBP FUNC_GBP_TO_EURO FUNC_EURO_TO_GBP FUNC_USD_TO_EURO FUNC_EURO_TO_USD
-%right FUNC_MI_TO_KM FUNC_KM_TO_MI
-%left VAR
-%%
-
-strt: strt stmt EOL { printf("= %lf\n", $2); }
-	| strt EOL { printf("\n"); }
-	| strt CMD_EXT { printf(">> Bye!\n"); exit(0); }
-	|
-;
-
-stmt: T_IDEN OP_EQL expr           { $$ = $3; $1 = $3; }
-    | expr                         { $$ = $1; }
-;
-
-
-expr: expr OP_ADD term          { $$ = $1 + $3; }
-    | expr OP_SUB term         { $$ = $1 - $3; }
-    | term  { $$ = $1; }
-;
-
-term: term OP_MUL unary     { $$ = $1 * $3; }
-    | term OP_DIV unary       { $$ = $1 / $3; }
-    | unary                     { $$ = $1; }
-;
-
-unary: OP_SUB unary            { $$ = $2 * -1; }
-    | pow                       { $$ = $1; }
-;
-
-pow: factor OP_POW pow           { $$ = pow($1,$3); }
-    | factor                    { $$ = $1; }
-;
-
-
-
-factor: T_IDEN                                      { $$ = $1; }
-	| V_PI  										{ $$ = 3.14; }
-    | T_INT                                         { $$ = $1; }
-    | T_FLOAT                                       { $$ = $1; }
-    | SYM_PRNL expr SYM_PRNR                        { $$ = ($2); }
-    | FUNC_SQRT SYM_PRNL expr SYM_PRNR              { $$ = sqrt($3); }
-    | FUNC_ABS SYM_PRNL expr SYM_PRNR               { $$ = fabs($3); }
-	| FUNC_FLOOR SYM_PRNL expr SYM_PRNR             { $$ = floor($3); }
-    | FUNC_CEIL SYM_PRNL expr SYM_PRNR              { $$ = ceil($3); }
-	| FUNC_SIN SYM_PRNL expr SYM_PRNR               { $$ = sin($3); }
-    | FUNC_COS SYM_PRNL expr SYM_PRNR               { $$ = cos($3); }
-	| FUNC_TAN SYM_PRNL expr SYM_PRNR               { $$ = tan($3); }
-    | FUNC_LOG2 SYM_PRNL expr SYM_PRNR              { $$ = log2($3); }
-	| FUNC_LOG10 SYM_PRNL expr SYM_PRNR             { $$ = log10($3); }
-;
-
-%%
-void yyerror(char *s)
-{
-	fprintf(stderr, ">> %s\n", s);
+%union {
+	int ival;
+	float fval;
 }
-int main()
-{
-	yyparse();
+
+%token<ival> T_INT
+%token<fval> T_FLOAT
+%token T_PLUS T_MINUS T_MULTIPLY T_DIVIDE T_LEFT T_RIGHT
+%token T_NEWLINE T_QUIT
+%left T_PLUS T_MINUS T_POW
+%left T_MULTIPLY T_DIVIDE
+
+%type<ival> expression
+%type<fval> mixed_expression
+
+%start calculation
+
+%%
+
+calculation:
+	   | calculation line
+;
+
+line: T_NEWLINE
+    | mixed_expression T_NEWLINE { printf("\tResult: %f\n", $1);}
+    | expression T_NEWLINE { printf("\tResult: %i\n", $1); }
+    | T_QUIT T_NEWLINE { printf("bye!\n"); exit(0); }
+;
+
+mixed_expression: T_FLOAT                 		 { $$ = $1; }
+	  | V_PI                 		 				{ $$ = 3.14; }
+	  | mixed_expression T_PLUS mixed_expression	 { $$ = $1 + $3; }
+	  | mixed_expression T_MINUS mixed_expression	 { $$ = $1 - $3; }
+	  | mixed_expression T_MULTIPLY mixed_expression { $$ = $1 * $3; }
+	  | mixed_expression T_DIVIDE mixed_expression	 { $$ = $1 / $3; }
+	  | mixed_expression T_POW mixed_expression	 { $$ = $1 % $3; }	  
+	  | T_LEFT mixed_expression T_RIGHT		 { $$ = $2; }
+	  | expression T_PLUS mixed_expression	 	 { $$ = $1 + $3; }
+	  | expression T_MINUS mixed_expression	 	 { $$ = $1 - $3; }
+	  | expression T_MULTIPLY mixed_expression 	 { $$ = $1 * $3; }
+	  | expression T_DIVIDE mixed_expression	 { $$ = $1 / $3; }
+	  | mixed_expression T_PLUS expression	 	 { $$ = $1 + $3; }
+	  | mixed_expression T_MINUS expression	 	 { $$ = $1 - $3; }
+	  | mixed_expression T_MULTIPLY expression 	 { $$ = $1 * $3; }
+	  | mixed_expression T_DIVIDE expression	 { $$ = $1 / $3; }
+	  | expression T_DIVIDE expression		 { $$ = $1 / (float)$3; }
+;
+
+expression: T_INT				{ $$ = $1; }
+	  | expression T_PLUS expression	{ $$ = $1 + $3; }
+	  | expression T_MINUS expression	{ $$ = $1 - $3; }
+	  | expression T_MULTIPLY expression	{ $$ = $1 * $3; }
+	  | T_LEFT expression T_RIGHT		{ $$ = $2; }
+;
+
+%%
+
+int main() {
+	yyin = stdin;
+
+	do {
+		yyparse();
+	} while(!feof(yyin));
+
 	return 0;
+}
+
+void yyerror(const char* s) {
+	fprintf(stderr, "Parse error: %s\n", s);
+	exit(1);
 }
